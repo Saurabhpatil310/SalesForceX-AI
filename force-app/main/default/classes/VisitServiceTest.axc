@@ -1,0 +1,14 @@
+@isTest
+private class VisitServiceTest {
+
+    @testSetup
+    static void setupData() {
+
+    }
+
+    @isTest
+    static void testVisitCreation() {
+
+    }
+
+}

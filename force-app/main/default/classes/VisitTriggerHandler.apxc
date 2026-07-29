@@ -1,0 +1,33 @@
+public with sharing class VisitTriggerHandler {
+
+    public static void handle() {
+
+        if (Trigger.isBefore) {
+
+            if (Trigger.isInsert) {
+                VisitService.beforeInsert((List<Visit__c>)Trigger.new);
+            }
+
+            if (Trigger.isUpdate) {
+                VisitService.beforeUpdate(
+                    (List<Visit__c>)Trigger.new,
+                    (Map<Id, Visit__c>)Trigger.oldMap
+                );
+            }
+        }
+
+        if (Trigger.isAfter) {
+
+            if (Trigger.isInsert) {
+                VisitService.afterInsert((List<Visit__c>)Trigger.new);
+            }
+
+            if (Trigger.isUpdate) {
+                VisitService.afterUpdate(
+                    (List<Visit__c>)Trigger.new,
+                    (Map<Id, Visit__c>)Trigger.oldMap
+                );
+            }
+        }
+    }
+}

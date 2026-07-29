@@ -1,0 +1,15 @@
+public with sharing class VisitSelector {
+
+    public static List<Visit__c> getVisitsByIds(Set<Id> visitIds) {
+
+        return [
+            SELECT Id,
+                   Name,
+                   Status__c,
+                   Doctor__c,
+                   Visit_Date__c
+            FROM Visit__c
+            WHERE Id IN :visitIds
+        ];
+    }
+}

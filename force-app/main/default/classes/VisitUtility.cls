@@ -4,4 +4,3 @@ public with sharing class VisitUtility {
         return visit.Status__c == VisitConstants.STATUS_COMPLETED;
     }
 }
-

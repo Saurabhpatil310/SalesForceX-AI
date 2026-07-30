@@ -1,6 +1,5 @@
 @isTest
 private class VisitServiceTest {
-
     @testSetup
     static void setupData() {
 

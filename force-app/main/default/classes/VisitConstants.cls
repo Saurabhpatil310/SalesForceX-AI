@@ -7,4 +7,3 @@ public class VisitConstants {
     public static final String STATUS_MISSED = 'Missed';
 
 }
-

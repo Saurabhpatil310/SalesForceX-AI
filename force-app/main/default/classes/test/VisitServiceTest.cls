@@ -4,7 +4,7 @@ private class VisitServiceTest {
     static void setupData() {
 
     }
-
+    
     @isTest
     static void testVisitCreation() {
 

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Next_Visit_Date_cannot_be_before_Visit_D</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+    NOT(ISBLANK( Next_Visit_Date__c )),
+    Next_Visit_Date__c &lt; Visit_Date__c
+)</errorConditionFormula>
+    <errorDisplayField>Next_Visit_Date__c</errorDisplayField>
+    <errorMessage>Next Visit Date cannot be before Visit Date.</errorMessage>
+</ValidationRule>

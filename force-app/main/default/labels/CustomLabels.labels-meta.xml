@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
+    <labels>
+        <fullName>GPS_Required</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>GPS Required</shortDescription>
+        <value>GPS location is mandatory before completing the visit.</value>
+    </labels>
+    <labels>
+        <fullName>Generic_Error</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Generic Error</shortDescription>
+        <value>Unexpected system error occurred. Please contact Administrator.</value>
+    </labels>
+    <labels>
+        <fullName>Visit_Completed_Error</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Visit Completed Error</shortDescription>
+        <value>Completed visits cannot be changed back to Planned.</value>
+    </labels>
+</CustomLabels>

@@ -1,15 +1,17 @@
 public with sharing class VisitSelector {
 
-    public static List<Visit__c> getVisitsByIds(Set<Id> visitIds) {
+    public static List<Visit__c> getTodayVisits() {
+    return [
+        SELECT Id,
+               Name,
+               Doctor__r.Name,
+               Status__c,
+               Priority__c,
+               Visit_Date__c
+        FROM Visit__c
+        WHERE Visit_Date__c = TODAY
+        ORDER BY CreatedDate DESC
+    ];
+}
 
-        return [
-            SELECT Id,
-                   Name,
-                   Status__c,
-                   Doctor__c,
-                   Visit_Date__c
-            FROM Visit__c
-            WHERE Id IN :visitIds
-        ];
-    }
 }

@@ -1,33 +1,49 @@
-public with sharing class VisitTriggerHandler {
+/**
+ * Trigger handler for Visit__c records.
+ */
+public with sharing class VisitTriggerHandler
+extends BaseTriggerHandler {
 
-    public static void handle() {
+    public override void beforeInsert(){
 
-        if (Trigger.isBefore) {
+        VisitService.beforeInsert(
+            (List<Visit__c>)Trigger.new
+        );
 
-            if (Trigger.isInsert) {
-                VisitService.beforeInsert((List<Visit__c>)Trigger.new);
-            }
-
-            if (Trigger.isUpdate) {
-                VisitService.beforeUpdate(
-                    (List<Visit__c>)Trigger.new,
-                    (Map<Id, Visit__c>)Trigger.oldMap
-                );
-            }
-        }
-
-        if (Trigger.isAfter) {
-
-            if (Trigger.isInsert) {
-                VisitService.afterInsert((List<Visit__c>)Trigger.new);
-            }
-
-            if (Trigger.isUpdate) {
-                VisitService.afterUpdate(
-                    (List<Visit__c>)Trigger.new,
-                    (Map<Id, Visit__c>)Trigger.oldMap
-                );
-            }
-        }
     }
+
+    public override void beforeUpdate(){
+
+        VisitService.beforeUpdate(
+
+            (List<Visit__c>)Trigger.new,
+
+            (Map<Id,Visit__c>)Trigger.oldMap
+
+        );
+
+    }
+
+    public override void afterInsert(){
+
+        VisitService.afterInsert(
+
+            (List<Visit__c>)Trigger.new
+
+        );
+
+    }
+
+    public override void afterUpdate(){
+
+        VisitService.afterUpdate(
+
+            (List<Visit__c>)Trigger.new,
+
+            (Map<Id,Visit__c>)Trigger.oldMap
+
+        );
+
+    }
+
 }

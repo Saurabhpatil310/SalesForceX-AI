@@ -68,5 +68,33 @@ public with sharing class VisitSelector {
         return stats;
     }
 
+    public static Visit__c getVisit(Id visitId){
+
+    return [
+
+        SELECT
+
+            Id,
+
+            Status__c,
+
+            Check_In_Time__c,
+
+            Check_Out_Time__c,
+
+            Representative__c,
+
+            Visit_Date__c
+
+        FROM Visit__c
+
+        WHERE Id=:visitId
+
+        LIMIT 1
+
+    ];
+
+}
+
 
 }

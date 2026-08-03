@@ -1,6 +1,18 @@
 import { LightningElement, wire } from 'lwc';
 
+import checkIn from '@salesforce/apex/visitDashboardController.checkIn';
+import checkOut from '@salesforce/apex/visitDashboardController.checkOut';
+import completeVisit from '@salesforce/apex/visitDashboardController.completeVisit';
+
 import getTodayVisits from '@salesforce/apex/VisitDashboardController.getTodayVisits';
+
+import { ShowToastEvent }
+from 'lightning/platformShowToastEvent';
+
+import { refreshApex }
+from '@salesforce/apex';
+
+
 
 const columns = [
 
@@ -34,27 +46,32 @@ export default class VisitDashboard extends LightningElement {
 
     visits=[];
 
-    @wire(getTodayVisits)
+    wiredVisitsResult;
 
-    wiredVisits({data,error}){
+@wire(getTodayVisits)
+wiredVisits(result){
 
-        if(data){
+    this.wiredVisitsResult = result;
 
-            this.visits=data.map(item=>{
+    const { data, error } = result;
 
-                return{
+    if(data){
 
-                    ...item,
+        this.visits = data.map(item => {
 
-                    doctorName:item.Doctor__r?.Name
+            return {
 
-                }
+                ...item,
 
-            });
+                doctorName: item.Doctor__r?.Name
 
-        }
+            };
+
+        });
 
     }
+
+}
 
     handleRowAction(event){
 
@@ -71,19 +88,86 @@ export default class VisitDashboard extends LightningElement {
             break;
 
         case 'checkin':
-
+              checkIn({visitId:row.Id})
+              .then(() =>{
+                this.showToast(
+                    'Success',
+                    'Visit Checked In',
+                    'success'
+                );
+                return refreshApex(this.wiredVisitsResult);
+              })
+              .catch(error => {
+                this.showToast(
+                    'Error',
+                    error.body.message,
+                    'error'
+                );
+              });
             break;
 
         case 'checkout':
 
+            checkOut({visitId:row.Id})
+            .then(() => {
+                this.showToast(
+                    'Success',
+                    'Visit Checked Out',
+                    'success'
+                );
+                return refreshApex(this.wiredVisitsResult);
+            })
+            .catch(error => {
+                this.showToast(
+                    'Error',
+                    error.body.message,
+                    'error'
+                );
+            });
+
             break;
 
+
         case 'complete':
+
+            completeVisit({visitId:row.Id})
+            .then(() => {
+                this.showToast(
+                    'Success',
+                    'Visit Completed',
+                    'success'
+                );
+                return refreshApex(this.wiredVisitsResult);
+            })
+            .catch(error => {
+                this.showToast(
+                    'Error',
+                    error.body.message,
+                    'error'
+                );
+            });
 
             break;
 
     }
 
+
+};
+showToast(title, message, variant) {
+
+    this.dispatchEvent(
+
+        new ShowToastEvent({
+
+            title: title,
+            message: message,
+            variant: variant
+
+        })
+
+    );
+
+refreshApex(this.wiredVisitsResult);
 
 }
 

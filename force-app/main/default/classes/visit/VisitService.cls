@@ -237,14 +237,66 @@ public with sharing class VisitService {
     }
 
 public static void checkIn(Id visitId){
+    Visit__c visit = VisitSelector.getVisit(visitId);
+
+    if(visit.Status__c != VisitConstants.STATUS_PLANNED){
+
+        throw new AuraHandledException(
+            'Only Planned visits can be Checked In.'
+        );
+
+    }
+
+    visit.Check_In_Time__c = System.now();
+
+    visit.Status__c = VisitConstants.STATUS_IN_PROGRESS;
+
+    update visit;
+
 
 }
 
 public static void checkOut(Id visitId){
+    Visit__c visit = VisitSelector.getVisit(visitId);
+
+    if(visit.Check_In_Time__c == null){
+
+        throw new AuraHandledException(
+            'Please Check In first.'
+        );
+
+    }
+
+    visit.Check_Out_Time__c = System.now();
+
+    update visit;
+
 
 }
 
 public static void completeVisit(Id visitId){
+    Visit__c visit = VisitSelector.getVisit(visitId);
+
+    if(visit.Check_In_Time__c == null){
+
+        throw new AuraHandledException(
+            'Please Check In first.'
+        );
+
+    }
+
+    if(visit.Check_Out_Time__c == null){
+
+        throw new AuraHandledException(
+            'Please Check Out first.'
+        );
+
+    }
+
+    visit.Status__c = VisitConstants.STATUS_COMPLETED;
+
+    update visit;
+
 
 }
 

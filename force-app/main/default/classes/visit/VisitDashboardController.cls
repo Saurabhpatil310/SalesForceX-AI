@@ -22,5 +22,26 @@ public with sharing class VisitDashboardController {
     return VisitService.getVisitStatistics();
 }
 
+     @AuraEnabled
+    public static void checkIn(Id visitId){
+
+        VisitService.checkIn(visitId);
+
+    }
+
+    @AuraEnabled
+    public static void checkOut(Id visitId){
+
+        VisitService.checkOut(visitId);
+
+    }
+
+    @AuraEnabled
+    public static void completeVisit(Id visitId){
+
+        VisitService.completeVisit(visitId);
+
+    }
+
 
 }

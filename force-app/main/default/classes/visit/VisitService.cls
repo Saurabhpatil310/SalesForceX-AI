@@ -1,5 +1,14 @@
+/**
+ * Service class for managing Visit records.
+ * Handles business logic for visits including status updates, follow-ups, and statistics.
+ */
 public with sharing class VisitService {
     
+    /**
+     * Handles before insert logic for Visit records.
+     *
+     * @param visits list of Visit records being inserted
+     */
     public static void beforeInsert(List<Visit__c> visits){
         
         try{
@@ -41,6 +50,13 @@ public with sharing class VisitService {
         
     }
     
+    /**
+     * Handles before update logic for Visit records.
+     * Ensures business rules are enforced prior to saving updates.
+     *
+     * @param visits list of Visit records being updated
+     * @param oldMap map of existing Visit records keyed by Id
+     */
     public static void beforeUpdate(
         List<Visit__c> visits,
         Map<Id,Visit__c> oldMap
@@ -74,6 +90,11 @@ public with sharing class VisitService {
         
     }
     
+    /**
+     * Creates follow-up tasks for visits marked with follow-up flag.
+     *
+     * @param visits list of Visit records to process for follow-up tasks
+     */
     Public static void createFollowUpTasks(List<Visit__c> visits){
         
         try{
@@ -100,9 +121,18 @@ public with sharing class VisitService {
             }
             
             if(!tasks.isEmpty()){
-                
-                insert tasks;
-                
+                // Validate CRUD permission before performing DML on Task (Security-ApexCRUDViolation)
+                if(Schema.sObjectType.Task.isCreateable()){
+                    insert tasks;
+                } else {
+                    // Log and skip insert to avoid security violation
+                    LoggingService.logException(
+                        'Visit Module',
+                        'VisitService',
+                        'createFollowUpTasks',
+                        new System.SecurityException('Insufficient create permission for Task')
+                    );
+                }
             }
         }catch(Exception ex){
             LoggingService.logException(
@@ -117,6 +147,12 @@ public with sharing class VisitService {
         
     }
     
+    /**
+     * Handles after insert logic for Visit records.
+     * Creates follow-up tasks based on visit configuration.
+     *
+     * @param visits list of Visit records inserted
+     */
     public static void afterInsert(List<Visit__c> visits){
         
         try{
@@ -133,7 +169,38 @@ public with sharing class VisitService {
             
         }
     }
-    
+
+
+    /**
+     * Retrieves Visit records scheduled for today.
+     *
+     * Delegates to VisitSelector.getTodayVisits() to perform the query and
+     * return Visit__c records where the visit date is today.
+     *
+     * @return list of Visit__c records for today's visits
+     */
+    public static List<Visit__c> getTodayVisits() {
+        return VisitSelector.getTodayVisits();
+    }
+
+
+    /**
+     * Retrieves aggregated visit statistics.
+     *
+     * @return map of statistic names to their integer values
+     */
+    public static Map<String, Integer> getVisitStatistics() {
+        return VisitSelector.getVisitStatistics();
+    }
+
+
+
+    /**
+     * Handles post-update logic for Visit records.
+     *
+     * @param visits list of updated Visit records
+     * @param oldMap map of old Visit records by Id
+     */
     public static void afterUpdate(
         List<Visit__c> visits,
         Map<Id,Visit__c> oldMap

@@ -1,8 +1,7 @@
 /**
- * Trigger handler for Visit__c records.
+ * VisitTriggerHandler class handles trigger events for Visit__c records.
  */
-public with sharing class VisitTriggerHandler
-extends BaseTriggerHandler {
+public with sharing class VisitTriggerHandler extends BaseTriggerHandler {
 
     public override void beforeInsert(){
 
@@ -45,5 +44,4 @@ extends BaseTriggerHandler {
         );
 
     }
-
 }

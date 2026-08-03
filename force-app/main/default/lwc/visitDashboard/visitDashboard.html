@@ -1,6 +1,8 @@
 <template>
     <c-visit-stats></c-visit-stats>
     <br/>
+    <c-visit-quick-actions></c-visit-quick-actions>
+    <br/>
     <lightning-card title="Today's Visits">
 
         <lightning-datatable
@@ -10,6 +12,8 @@
             data={visits}
 
             columns={columns}
+
+             onrowaction={handleRowAction}
 
         >
 

@@ -235,4 +235,17 @@ public with sharing class VisitService {
         }
         
     }
+
+public static void checkIn(Id visitId){
+
+}
+
+public static void checkOut(Id visitId){
+
+}
+
+public static void completeVisit(Id visitId){
+
+}
+
 }

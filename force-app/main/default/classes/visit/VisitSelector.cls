@@ -97,4 +97,46 @@ public with sharing class VisitSelector {
 }
 
 
+public static Map<String, Integer> getTeamStatistics() {
+
+    Map<String, Integer> stats =
+        new Map<String, Integer>{
+            'Total' => 0,
+            'Planned' => 0,
+            'In Progress' => 0,
+            'Completed' => 0,
+            'Missed' => 0,
+            'Cancelled' => 0
+        };
+
+    for (AggregateResult ar : [
+
+        SELECT
+            Status__c status,
+            COUNT(Id) total
+
+        FROM Visit__c
+
+        GROUP BY Status__c
+
+    ]) {
+
+        String status = (String) ar.get('status');
+
+        Integer total =
+            (Integer) ar.get('total');
+
+        stats.put(status, total);
+
+        stats.put(
+            'Total',
+            stats.get('Total') + total
+        );
+    }
+
+    return stats;
+}
+
+
+
 }

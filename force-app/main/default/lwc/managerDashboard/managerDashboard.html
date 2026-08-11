@@ -1,0 +1,134 @@
+<template>
+
+    <lightning-card title="Manager Dashboard">
+
+        <div class="slds-p-around_medium">
+
+            <lightning-layout
+                multiple-rows
+                horizontal-align="spread">
+
+                <lightning-layout-item
+                    size="9"
+                    medium-device-size="3"
+                    padding="around-small">
+
+                    <div class="metric-card">
+
+                        <div class="metric-title">
+                            Total Visits
+                        </div>
+
+                        <div class="metric-value">
+                            {total}
+                        </div>
+
+                    </div>
+
+                </lightning-layout-item>
+
+
+                <lightning-layout-item
+                    size="9"
+                    medium-device-size="3"
+                    padding="around-small">
+
+                    <div class="metric-card">
+
+                        <div class="metric-title">
+                            Planned
+                        </div>
+
+                        <div class="metric-value">
+                            {planned}
+                        </div>
+
+                    </div>
+
+                </lightning-layout-item>
+
+
+                <lightning-layout-item
+                    size="9"
+                    medium-device-size="3"
+                    padding="around-small">
+
+                    <div class="metric-card">
+
+                        <div class="metric-title">
+                            In Progress
+                        </div>
+
+                        <div class="metric-value">
+                            {inProgress}
+                        </div>
+
+                    </div>
+
+                </lightning-layout-item>
+
+
+                <lightning-layout-item
+                    size="9"
+                    medium-device-size="3"
+                    padding="around-small">
+
+                    <div class="metric-card">
+
+                        <div class="metric-title">
+                            Completed
+                        </div>
+
+                        <div class="metric-value">
+                            {completed}
+                        </div>
+
+                    </div>
+
+                </lightning-layout-item>
+
+                <lightning-layout-item
+                    size="9"
+                    medium-device-size="3"
+                    padding="around-small">
+
+                    <div class="metric-card">
+
+                        <div class="metric-title">
+                            Missed
+                        </div>
+
+                        <div class="metric-value">
+                            {missed}
+                        </div>
+
+                    </div>
+
+                </lightning-layout-item>
+
+                <lightning-layout-item
+                    size="9"
+                    medium-device-size="3"
+                    padding="around-small">
+
+                    <div class="metric-card">
+
+                        <div class="metric-title">
+                            Cancelled
+                        </div>
+
+                        <div class="metric-value">
+                            {cancelled}
+                        </div>
+
+                    </div>
+
+                </lightning-layout-item>
+
+            </lightning-layout>
+
+        </div>
+
+    </lightning-card>
+
+</template>

@@ -3,22 +3,68 @@
     <br/>
     <c-visit-quick-actions></c-visit-quick-actions>
     <br/>
+    <lightning-layout>
+
+    <lightning-layout-item size="6">
+
+        <lightning-input 
+            type="search"
+            label="Search Doctor"
+            onchange={handleSearch}>
+        </lightning-input>
+
+    </lightning-layout-item>
+
+    <lightning-layout-item size="6">
+
+        <lightning-combobox
+            label="Status"
+            value={selectedStatus}
+            options={statusOptions}
+            onchange={handleStatusChange}>
+        </lightning-combobox>
+
+    </lightning-layout-item>
+
+</lightning-layout>
+<br/>
+
     <lightning-card title="Today's Visits">
 
         <lightning-datatable
-
             key-field="Id"
-
-            data={visits}
-
+            data={filteredVisits}
             columns={columns}
-
-             onrowaction={handleRowAction}
-
-        >
-
+            onrowaction={handleRowAction}>
         </lightning-datatable>
 
+        
+
     </lightning-card>
+
+    
+
+<br/>
+
+
+
+<lightning-button
+
+label="Previous"
+
+onclick={previousPage}>
+
+</lightning-button>
+
+<lightning-button
+
+label="Next"
+
+onclick={nextPage}
+
+class="slds-m-left_small">
+
+</lightning-button>
+
 
 </template>

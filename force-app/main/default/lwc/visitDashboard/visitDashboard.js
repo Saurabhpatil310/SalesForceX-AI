@@ -12,6 +12,10 @@ from 'lightning/platformShowToastEvent';
 import { refreshApex }
 from '@salesforce/apex';
 
+import { NavigationMixin }
+from 'lightning/navigation';
+
+
 
 
 const columns = [
@@ -23,6 +27,8 @@ const columns = [
     {label:'Status',fieldName:'Status__c'},
 
     {label:'Priority',fieldName:'Priority__c'},
+
+    {label:'Assigned To',fieldName:'representativeName'},
 
     {
         type: 'action',
@@ -40,13 +46,26 @@ const columns = [
 ];
 
     
-export default class VisitDashboard extends LightningElement {
+export default class VisitDashboard extends NavigationMixin(LightningElement) {
 
     columns = columns;
 
     visits=[];
 
+    filteredVisits = [];
+
+    searchKey = '';
+
+    selectedStatus = 'All';
+
     wiredVisitsResult;
+
+    page = 1;
+
+    pageSize = 10;
+
+    totalPages = 0;
+
 
 @wire(getTodayVisits)
 wiredVisits(result){
@@ -63,11 +82,15 @@ wiredVisits(result){
 
                 ...item,
 
-                doctorName: item.Doctor__r?.Name
+            doctorName:item.Doctor__r?.Name,
+
+            representativeName:item.Representative__r?.Name
+
 
             };
 
         });
+        this.filteredVisits = [...this.visits];
 
     }
 
@@ -83,8 +106,19 @@ wiredVisits(result){
 
         case 'view':
 
-            // Navigate
+            this[NavigationMixin.Navigate]({
 
+            type:'standard__recordPage',
+
+            attributes:{
+
+            recordId:row.Id,
+
+            objectApiName:'Visit__c',
+
+            actionName:'view'
+            }
+        });
             break;
 
         case 'checkin':
@@ -170,5 +204,101 @@ showToast(title, message, variant) {
 refreshApex(this.wiredVisitsResult);
 
 }
+
+get statusOptions() {
+
+    return [
+
+        { label: 'All', value: 'All' },
+
+        { label: 'Planned', value: 'Planned' },
+
+        { label: 'In Progress', value: 'In Progress' },
+
+        { label: 'Completed', value: 'Completed' },
+
+        { label: 'Missed', value: 'Missed' },
+
+        { label: 'Cancelled', value: 'Cancelled' }
+
+    ];
+
+}
+
+handleSearch(event){
+
+    this.searchKey = event.target.value.toLowerCase();
+
+    this.filterVisits();
+
+}
+
+handleStatusChange(event){
+
+    this.selectedStatus = event.detail.value;
+
+    this.filterVisits();
+
+}
+
+filterVisits(){
+
+    this.filteredVisits = this.visits.filter(visit=>{
+
+        const doctor =
+            visit.doctorName
+            ? visit.doctorName.toLowerCase()
+            : '';
+
+        const searchMatch =
+            doctor.includes(this.searchKey);
+
+        const statusMatch =
+            this.selectedStatus==='All' || visit.Status__c===this.selectedStatus;
+
+        return searchMatch && statusMatch;
+
+    });
+
+}
+
+updatePagination(){
+
+    const start =
+        (this.page-1)*this.pageSize;
+
+    const end =
+        start+this.pageSize;
+
+    this.filteredVisits =
+        this.filteredVisits.slice(start,end);
+
+}
+
+nextPage(){
+
+    if(this.page<this.totalPages){
+
+        this.page++;
+
+        this.filterVisits();
+
+    }
+
+}
+
+previousPage(){
+
+    if(this.page>1){
+
+        this.page--;
+
+        this.filterVisits();
+
+    }
+
+}
+
+
 
 }

@@ -3,9 +3,23 @@ import { LightningElement, wire } from 'lwc';
 import getTeamStatistics
     from '@salesforce/apex/ManagerDashboardController.getTeamStatistics';
 
+import getRepresentativePerformance
+    from '@salesforce/apex/ManagerDashboardController.getRepresentativePerformance';
+
+import getUpcomingVisits
+    from '@salesforce/apex/ManagerDashboardController.getUpcomingVisits';
+
+
+
+
 export default class ManagerDashboard extends LightningElement {
 
     stats = {};
+
+    representatives = [];
+
+    upcomingVisits = [];
+
 
     @wire(getTeamStatistics)
     wiredStatistics({ data, error }) {
@@ -21,6 +35,132 @@ export default class ManagerDashboard extends LightningElement {
         }
 
     }
+
+    @wire(getRepresentativePerformance)
+wiredPerformance({ data, error }) {
+
+    if (data) {
+
+        this.representatives = data;
+
+    } else if (error) {
+
+        console.error(
+            'Performance Error',
+            error
+        );
+
+    }
+
+}
+
+@wire(getUpcomingVisits)
+wiredUpcomingVisits({ data, error }) {
+
+    if (data) {
+
+        this.upcomingVisits = data.map(visit => {
+
+            return {
+                ...visit,
+
+                doctorName:
+                    visit.Doctor__r?.Name,
+
+                representativeName:
+                    visit.Representative__r?.Name
+            };
+
+        });
+
+    } else if (error) {
+
+        console.error(
+            'Upcoming Visit Error',
+            error
+        );
+
+    }
+
+}
+
+representativeColumns = [
+
+    {
+        label: 'Representative',
+        fieldName: 'representativeName'
+    },
+
+    {
+        label: 'Total Visits',
+        fieldName: 'totalVisits',
+        cellAttributes: {
+        alignment: 'left'
+    }
+    },
+
+    {
+        label: 'Completed',
+        fieldName: 'completedVisits',
+        cellAttributes: {
+        alignment: 'left'
+    }
+    },
+
+    {
+        label: 'Completion %',
+        fieldName: 'completionPercentage',
+        cellAttributes: {
+        alignment: 'left'
+    },
+        type: 'number',
+        typeAttributes: {
+            minimumFractionDigits: 1,
+            maximumFractionDigits: 1
+    }
+    }
+
+];
+
+upcomingVisitColumns = [
+
+    {
+        label: 'Visit',
+        fieldName: 'Name'
+    },
+
+    {
+        label: 'Doctor',
+        fieldName: 'doctorName'
+    },
+
+    {
+        label: 'Representative',
+        fieldName: 'representativeName'
+    },
+
+    {
+        label: 'Visit Date',
+        fieldName: 'Visit_Date__c',
+        type: 'date'
+    },
+
+    {
+        label: 'Status',
+        fieldName: 'Status__c'
+    },
+
+    {
+        label: 'Priority',
+        fieldName: 'Priority__c'
+    }
+
+];
+
+
+
+
+
 
     get total() {
         return this.stats.Total || 0;

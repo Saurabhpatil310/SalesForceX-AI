@@ -130,5 +130,39 @@
         </div>
 
     </lightning-card>
+<br />
+
+    <lightning-card title="Representative Performance">
+
+    <div class="slds-p-around_medium">
+
+        <lightning-datatable
+            key-field="representativeId"
+            data={representatives}
+            columns={representativeColumns}
+            hide-checkbox-column>
+        </lightning-datatable>
+
+    </div>
+
+</lightning-card>
+
+<br />
+
+<lightning-card title="Upcoming Visits">
+
+    <div class="slds-p-around_medium">
+
+        <lightning-datatable
+            key-field="Id"
+            data={upcomingVisits}
+            columns={upcomingVisitColumns}
+            hide-checkbox-column>
+        </lightning-datatable>
+
+    </div>
+
+</lightning-card>
+
 
 </template>

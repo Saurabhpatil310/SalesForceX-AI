@@ -21,7 +21,8 @@ public with sharing class VisitSelector {
                    Doctor__r.Name,
                    Status__c,
                    Priority__c,
-                   Visit_Date__c
+                   Visit_Date__c,
+                   Representative__r.Name
             FROM Visit__c
             WHERE Visit_Date__c = TODAY
             ORDER BY CreatedDate DESC
@@ -136,6 +137,56 @@ public static Map<String, Integer> getTeamStatistics() {
 
     return stats;
 }
+
+
+public static List<AggregateResult> getRepresentativePerformance() {
+
+    return [
+        SELECT
+            Representative__c representativeId,
+            Representative__r.Name representativeName,
+            Status__c status,
+            COUNT(Id) totalVisits
+
+        FROM Visit__c
+
+        WHERE Representative__c != null
+
+        GROUP BY
+            Representative__c,
+            Representative__r.Name,
+            Status__c
+
+        ORDER BY Representative__r.Name
+    ];
+}
+
+
+public static List<Visit__c> getUpcomingVisits() {
+
+    return [
+        SELECT
+            Id,
+            Name,
+            Doctor__r.Name,
+            Representative__r.Name,
+            Visit_Date__c,
+            Status__c,
+            Priority__c
+
+        FROM Visit__c
+
+        WHERE
+            Visit_Date__c >= TODAY
+            AND Status__c = 'Planned'
+
+        ORDER BY Visit_Date__c ASC
+
+        LIMIT 10
+    ];
+}
+
+
 
 
 

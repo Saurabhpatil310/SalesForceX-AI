@@ -92,6 +92,10 @@ wiredVisits(result){
         });
         this.filteredVisits = [...this.visits];
 
+    } else if(error){
+
+        console.error('Error fetching Todays visits:', error);
+
     }
 
 }

@@ -10,6 +10,12 @@ import getUpcomingVisits
     from '@salesforce/apex/ManagerDashboardController.getUpcomingVisits';
 
 
+import hasManagerAccess
+    from '@salesforce/customPermission/SalesForceX_AI_Manager_Access';
+
+    
+
+
 
 
 export default class ManagerDashboard extends LightningElement {
@@ -35,6 +41,12 @@ export default class ManagerDashboard extends LightningElement {
         }
 
     }
+
+    get isManager() {
+
+    return hasManagerAccess;
+
+}
 
     @wire(getRepresentativePerformance)
 wiredPerformance({ data, error }) {

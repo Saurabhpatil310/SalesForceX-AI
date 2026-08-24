@@ -8,26 +8,85 @@ public with sharing class VisitSelector {
      *
      * @return List<Visit__c> visits for the current day
      */
-    public static List<Visit__c> getTodayVisits() {
-        // Enforce CRUD: ensure the running user has read access to Visit__c
-        if (!Schema.sObjectType.Visit__c.isAccessible()) {
-            // Return empty list when no access to avoid unauthorized SOQL
-            return new List<Visit__c>();
-        }
+    // public static List<Visit__c> getTodayVisits() {
+    //     // Enforce CRUD: ensure the running user has read access to Visit__c
+    //     if (!Schema.sObjectType.Visit__c.isAccessible()) {
+    //         // Return empty list when no access to avoid unauthorized SOQL
+    //         return new List<Visit__c>();
+    //     }
 
-        return [
-            SELECT Id,
-                   Name,
-                   Doctor__r.Name,
-                   Status__c,
-                   Priority__c,
-                   Visit_Date__c,
-                   Representative__r.Name
-            FROM Visit__c
-            WHERE Visit_Date__c = TODAY
-            ORDER BY CreatedDate DESC
-        ];
-    }
+    //     return [
+    //         SELECT Id,
+    //                Name,
+    //                Doctor__r.Name,
+    //                Status__c,
+    //                Priority__c,
+    //                Visit_Date__c,
+    //                Representative__r.Name,
+    //                Check_In_Time__c,
+    //                Check_Out_Time__c
+    //         FROM Visit__c
+    //         WHERE Representative__c = :UserInfo.getUserId()
+    //         AND Visit_Date__c = TODAY
+    //         ORDER BY CreatedDate DESC
+    //     ];
+    // }
+
+    public static List<Visit__c> getTodaysMyVisits() {
+
+    Id currentUserId = UserInfo.getUserId();
+
+    return [
+        SELECT
+            Id,
+            Name,
+            Doctor__r.Name,
+            Representative__c,
+            Representative__r.Name,
+            Visit_Date__c,
+            Status__c,
+            Priority__c,
+            Check_In_Time__c,
+            Check_Out_Time__c
+
+        FROM Visit__c
+
+        WHERE
+            Visit_Date__c = TODAY
+            AND Representative__c = :currentUserId
+
+        ORDER BY CreatedDate ASC
+    ];
+}
+
+
+/**
+     * Returns visits scheduled for today of all users.
+     *
+     * @return List<Visit__c> visits for the current day
+     */
+public static List<Visit__c> getTodaysTeamVisits() {
+
+    return [
+        SELECT
+            Id,
+            Name,
+            Doctor__r.Name,
+            Representative__c,
+            Representative__r.Name,
+            Visit_Date__c,
+            Status__c,
+            Priority__c,
+            Check_In_Time__c,
+            Check_Out_Time__c
+
+        FROM Visit__c
+
+        WHERE Visit_Date__c = TODAY
+
+        ORDER BY CreatedDate ASC
+    ];
+}
 
     /**
      * Returns aggregated visit statistics by status.

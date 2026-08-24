@@ -164,5 +164,28 @@
 
 </lightning-card>
 
+<template if:true={isManager}>
+
+        <!-- Manager dashboard -->
+
+    </template>
+
+    <template if:false={isManager}>
+
+        <lightning-card
+            title="Access Restricted">
+
+            <div class="slds-p-around_medium">
+
+                You do not have access to the Manager Dashboard.
+
+            </div>
+
+        </lightning-card>
+
+    </template>
+
+
+
 
 </template>

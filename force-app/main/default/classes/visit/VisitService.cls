@@ -179,9 +179,24 @@ public with sharing class VisitService {
      *
      * @return list of Visit__c records for today's visits
      */
+    // public static List<Visit__c> getTodayVisits() {
+    //     return VisitSelector.getTodayVisits();
+    // }
     public static List<Visit__c> getTodayVisits() {
-        return VisitSelector.getTodayVisits();
+
+    if (
+        FeatureManagement.checkPermission(
+            'SalesForceX_AI_Manager_Access'
+        )
+    ) {
+
+        return VisitSelector.getTodaysTeamVisits();
+
     }
+
+    return VisitSelector.getTodaysMyVisits();
+
+}
 
 
     /**
@@ -246,6 +261,13 @@ public static void checkIn(Id visitId){
         );
 
     }
+
+    if (visit.Representative__c != UserInfo.getUserId()) {
+
+    throw new AuraHandledException(
+        'You are not authorized to update this visit.'
+    );
+}
 
     visit.Check_In_Time__c = System.now();
 

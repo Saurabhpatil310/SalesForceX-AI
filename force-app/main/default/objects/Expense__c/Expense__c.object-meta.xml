@@ -143,7 +143,6 @@
     <allowInChatterGroups>false</allowInChatterGroups>
     <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
     <deploymentStatus>Deployed</deploymentStatus>
-    <description>Stores Log error,Stack trace</description>
     <enableActivities>true</enableActivities>
     <enableBulkApi>true</enableBulkApi>
     <enableFeeds>false</enableFeeds>
@@ -154,15 +153,15 @@
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>Private</externalSharingModel>
-    <label>Application Log</label>
+    <label>Expense</label>
     <nameField>
-        <displayFormat>LOG-{000000}</displayFormat>
-        <label>Log Number</label>
+        <displayFormat>EXP-{00000}</displayFormat>
+        <label>Expense Number</label>
         <trackHistory>false</trackHistory>
         <type>AutoNumber</type>
     </nameField>
-    <pluralLabel>Application Logs</pluralLabel>
+    <pluralLabel>Expenses</pluralLabel>
     <searchLayouts></searchLayouts>
-    <sharingModel>Private</sharingModel>
+    <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>
 </CustomObject>

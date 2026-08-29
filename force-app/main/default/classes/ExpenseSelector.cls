@@ -10,5 +10,11 @@ public with sharing class ExpenseSelector {
         ];
 
     }
+
+    Public static List<Visit__c> getMyVisitsForExpense(){
+        return[
+            SELECT id, name, Visit_Date__c, status__c, doctor__r.name FROM Visit__c WHERE Representative__c =:UserInfo.getUserId() ORDER BY Visit_Date__c DESC LIMIT 100
+        ];
+    }
     
 } 

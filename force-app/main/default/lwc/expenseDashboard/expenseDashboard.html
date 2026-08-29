@@ -91,6 +91,16 @@
                         required>
                     </lightning-input>
 
+                    <lightning-combobox
+                    name="visitId"
+                    label="Related Visit"
+                    value={visitId}
+                    options={visits}
+                    onchange={handleInputChange}
+                    placeholder="Select a visit">
+                    </lightning-combobox>
+
+
 
                     <lightning-textarea
                         name="description"
@@ -113,8 +123,55 @@
                             variant="brand"
                             onclick={handleSaveExpense}>
                         </lightning-button>
-
                     </div>
+
+                       <!-- Receipt Section -->
+<template if:true={createdExpenseId}>
+
+    <div class="receipt-section slds-m-top_large">
+
+        <div class="receipt-header">
+
+            <h3 class="slds-text-heading_small">
+                Upload Receipt
+            </h3>
+
+            <p class="slds-text-body_small slds-m-top_x-small">
+                Attach the receipt for this expense.
+            </p>
+
+        </div>
+
+
+        <div class="receipt-upload slds-m-top_medium">
+
+            <lightning-file-upload
+                label="Receipt"
+                name="receipt"
+                accept={acceptedFormats}
+                record-id={createdExpenseId}
+                onuploadfinished={handleUploadFinished}
+                multiple="false">
+            </lightning-file-upload>
+
+        </div>
+
+
+        <div class="slds-m-top_medium slds-text-align_right">
+
+            <lightning-button
+                label="Done"
+                variant="neutral"
+                onclick={handleCloseModal}>
+            </lightning-button>
+
+        </div>
+
+    </div>
+
+</template>
+
+                
 
                 </div>
 

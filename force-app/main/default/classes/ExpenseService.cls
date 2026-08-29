@@ -15,4 +15,8 @@ public with sharing class ExpenseService {
         return expense;
     }
 
+    public static List<Visit__c> getMyVisitsForExpense(){
+        return ExpenseSelector.getMyVisitsForExpense();
+    }
+
 }

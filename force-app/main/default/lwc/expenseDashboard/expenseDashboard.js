@@ -8,6 +8,8 @@ import getMyExpenses from '@salesforce/apex/ExpenseController.getMyExpenses';
 
 import createExpense from '@salesforce/apex/ExpenseController.createExpense';
 
+import getMyVisitsForExpense from '@salesforce/apex/ExpenseController.getMyVisitsForExpense';
+
 
 
 export default class ExpenseDashboard extends LightningElement {
@@ -20,7 +22,16 @@ export default class ExpenseDashboard extends LightningElement {
     expenseDate;
     visitId = '';
     description = '';
+    visits = [];
+    visitId = '';
+    createdExpenseId;
 
+    acceptedFormats = [
+    '.pdf',
+    '.png',
+    '.jpg',
+    '.jpeg'
+];
 
     columns =[
         {label: 'Expense Number', fieldName : 'Name'},
@@ -49,7 +60,25 @@ export default class ExpenseDashboard extends LightningElement {
 
     handleCloseModal(){
         this.isNewExpenseModalOpen = false;
+        this.resetForm();
     }
+
+    resetForm() {
+
+    this.expenseType = '';
+
+    this.amount = null;
+
+    this.expenseDate = null;
+
+    this.visitId = '';
+
+    this.description = '';
+
+    this.createdExpenseId = null;
+
+}
+
 
     handleSuccess(){
         this.showToast(
@@ -97,14 +126,15 @@ handleSaveExpense(){
             this.description
     };
     createExpense({expense})
-        .then(()=>{
+        .then((result)=>{
+            this.createdExpenseId = result.Id;
+
             this.showToast(
                 'Success',
                 'Expense saved as Draft.',
                 'success'
             );
-            this.isNewExpenseModalOpen = false;
-
+        
             return refreshApex(
                 this.wiredExpensesResult
             );
@@ -156,7 +186,34 @@ get expenseTypeOptions() {
 
 }
 
+    @wire(getMyVisitsForExpense)
+    wiredVisits({data, error}){
+        if (data){
+            this.visits = data.map(visit =>{
+                return{
+                    label: `${visit.Name} - ${visit.Doctor__r?.Name || 'No Doctor'} - ${visit.Visit_Date__c}`,
+                    value: visit.Id
+                };
+            });
 
+        } else if (error){
+            console.error('Error loading visits', error);
+        }
+    }
+
+
+handleUploadFinished(event) {
+
+    const uploadedFiles =
+        event.detail.files;
+
+    this.showToast(
+        'Success',
+        `${uploadedFiles.length} receipt uploaded successfully.`,
+        'success'
+    );
+
+}
 
 
 

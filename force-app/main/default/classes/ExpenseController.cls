@@ -5,8 +5,13 @@ public with sharing class ExpenseController {
         return ExpenseService.getMyExpenses();
     }
 
-    @AuraEnabled
+    @AuraEnabled 
     public static Expense__c createExpense(Expense__c expense){
         return ExpenseService.createExpense(expense);
-}
+    }
+
+    @AuraEnabled(cacheable=true)
+    public static List<Visit__c> getMyVisitsForExpense(){
+        return ExpenseService.getMyVisitsForExpense();
+    }
 }

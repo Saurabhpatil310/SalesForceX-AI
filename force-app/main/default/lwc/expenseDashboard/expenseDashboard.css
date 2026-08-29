@@ -1,0 +1,22 @@
+.receipt-section {
+    border-top: 1px solid #dddbda;
+    padding-top: 1rem;
+}
+
+.receipt-header {
+    margin-bottom: 0.5rem;
+}
+
+.receipt-upload {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.receipt-section lightning-file-upload {
+    width: 100%;
+}
+
+.slds-modal__container {
+    max-width: 40rem;
+    width: 90%;
+}
